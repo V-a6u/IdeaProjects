@@ -1,0 +1,260 @@
+<html xmlns="http://www.w3.org/1999/html">
+
+<style>
+    table{
+        width: 100%
+    }
+    table, tr, td{
+        mardin: 10px;
+        padding: 5px;
+        border: 1px solid black;
+        text-align: center;
+    }
+    ul{
+        list-style: none;
+        padding: 10px;
+        margin: 10px;
+    }
+    #deleteBtn, #editBtn{
+        padding: 5px;
+        width: 100%;
+    }
+</style>
+
+<script>
+    let i = 0;
+    function doSomething(){
+        ++i;
+        let element1 = document.createElement("input");
+        element1.type = "button";
+        element1.value="Clicked me " + i + " times";
+
+        element1.onclick = function(){
+            alert("Hello World!");
+        }
+
+        document.body.appendChild(element1);
+
+        //let elementBR = document.createElement("br");
+        //document.body.appendChild(elementBR);
+    }
+
+    let employees =[
+        {
+            empno: 121,
+            name: "Vasu",
+            salary: 10000,
+            department: "IT"
+        },
+        {
+          empno: 122,
+          name: "XYZ",
+          salary: 2500,
+          department: "Comm"
+        },
+        {
+            empno: 123,
+            name: "ABC",
+            salary: 2000,
+            department: "IT"
+        },
+        {
+            empno: 124,
+            name: "EFG",
+            salary: 5000,
+            department: "Business"
+        },
+        {
+            empno: 125,
+            name: "PQR",
+            salary: 1000,
+            department: "HR"
+        }
+    ]
+
+    function calcTax(salary){
+        let tax = 0;
+        if(salary < 1000){
+            tax = 0;
+        }
+        else if(salary >= 1000 && salary < 2000){
+            tax = salary * 15/100;
+        }
+        else{
+            tax = salary * 21/100;
+        }
+        return tax;
+    }
+
+    function showData(filterOption){    //show data of employees in table
+        table1 = document.getElementById("table1");
+        table1.innerHTML = "<tr>\n" +       //this will reload the table
+                                "<td>S.No.</td>\n" +
+                                "<td>Employee no.</td>\n" +
+                                "<td>Employee</td>\n" +
+                                "<td>Salary</td>\n" +
+                                "<td>Tax</td>" +
+                                "<td>Net</td>" +
+                                "<td>Departmenmt</td>\n" +
+                                "<td>Operations</td>" +
+                            "</tr>";
+
+
+        for( let i=0; i<employees.length; i++ ){
+            if(employees[i].department == filterOption || filterOption=="default" || filterOption=="Select Filter")
+            {
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+                let td4 = document.createElement("td");
+                let td5 = document.createElement("td");
+                let td6 = document.createElement("td");
+                let td7 = document.createElement("td");
+
+                //Delete Button
+                let deleteBtn = document.createElement("input")
+                deleteBtn.type = "button";
+                deleteBtn.value = "Delete";
+                deleteBtn.id = "deleteBtn";
+
+                deleteBtn.onclick = function deleteRecord() {
+                    let choice = confirm("Are you sure you want to delete?");
+                    if (choice) {
+                        employees.splice(i, 1);
+                        showData();
+                    }
+                }
+
+                //Edit Button
+                let editBtn = document.createElement("input")
+                editBtn.type = "button";
+                editBtn.value = "Edit";
+                editBtn.id = "editBtn";
+
+                editBtn.onclick = function editRecord() {
+                    td3.innerHTML = "<input value=" + employees[i].name + ">";
+                    td4.innerHTML = "<input value=" + employees[i].salary + ">";
+                    td7.innerHTML = "<input value=" + employees[i].department + ">";
+
+                    td3.value = employees[i].name;
+                    td4.value = employees[i].salary;
+                    td7.value = employees[i].department;
+
+                    editBtn.value="Save";
+                    editBtn.onclick = function saveEdit() {
+                        if (editBtn.value == "Save") {
+                            //alert("hi");
+
+                            employees[i].name = td.value;
+                            alert(td3.value);
+                        }
+                        showData("default");
+                    }
+                }
+
+                //Adding data to element
+                td1.innerHTML = i + 1;    //start serial number from 1
+                td2.innerHTML = employees[i].empno;
+                td3.innerHTML = employees[i].name;
+                td4.innerHTML = employees[i].salary;
+                td7.innerHTML = employees[i].department;
+
+                //Calculating tax
+                let tax = calcTax(employees[i].salary);
+                let net = employees[i].salary - tax;
+
+                td5.innerHTML = tax;
+                td6.innerHTML = net;
+
+                //Appending the data on table
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+                tr.appendChild(td6);
+                tr.appendChild(td7);
+                tr.appendChild(deleteBtn);
+                tr.appendChild(editBtn);
+
+                //Appending on the webpage
+                table1.appendChild(tr);
+            }
+        }
+    }
+
+    function newRecord(){
+        inputform.style.visibility = "visible";
+    }
+
+    function addRecord(){
+        let emp = {
+            empno: li1.value,
+            name: li2.value,
+            salary: li3.value,
+            department: li4.value
+        }
+        employees.push(emp);
+        alert("New Record Added");
+
+        li1.value ="";
+        li2.value ="";
+        li3.value ="";
+        li4.value ="";
+
+        inputform.style.visibility = "hidden";
+        showData("default");
+    }
+
+    function filterRecord(filterOption){
+        //alert(filterOption);
+        showData(filterOption);
+    }
+
+</script>
+
+<body onload="showData('default')"></body>
+
+<!-- Summon a new button -->
+<input type="Button" value="Summon" onclick="doSomething()">
+<br><hr>
+
+<!--Add Record -->
+<input type="button" value="New Record" onclick="newRecord()">
+<span id="inputform" style="visibility: hidden;">
+    <ul>
+        <li>Emp No.: <input type="text" id="li1"></li>
+        <li>Name: <input type="text" id="li2"></li>
+        <li>Salary: <input type="text" id="li3"></li>
+        <li>Department: <input type="text" id="li4"></li>
+    </ul>
+    <input type="button" value="Add Record" onclick="addRecord()">
+</span>
+
+<br><hr>
+
+<!-- Show data in table -->
+<input type="Button" value="Show Data" onclick="showData('default')">
+<table id="table1">
+    <tr>
+        <td>S.No.</td>
+        <td>Employee no.</td>
+        <td>Employee</td>
+        <td>Salary</td>
+        <td>Tax</td>
+        <td>Net</td>
+        <td>Department</td>
+        <td>Operations</td>
+    </tr>
+</table>
+
+<!-- Filter data -->
+<select id="filter" onchange="filterRecord(this.value)">
+    <option>Select Filter</option>
+    <option>IT</option>
+    <option>Comm</option>
+    <option>Business</option>
+    <option>HR</option>
+</select>
+</html>

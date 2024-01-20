@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            padding: 10px;
+            margin: 10px;
+        }
+
+        tr, td{
+            padding: 10px;
+            margin: 10px;
+        }
+
+        input{
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+
+    <script>
+        let firstNumber = 0;
+        let secondNumber = 0;
+        let answer = 0;
+
+        let operator = "";
+
+        function digits(digit){
+            if(scrn.value!=""){
+                scrn.value += digit;
+            }
+            else{
+                    scrn.value = digit;
+                }
+        }
+
+        function operations(sign){
+            //alert(operand);
+            firstNumber = parseInt(scrn.value); //storing the value on screen
+            operator = sign;
+            scrn.value = "";
+        }
+
+        function calculate(){
+            secondNumber = parseInt(scrn.value); //storing the value on second number
+
+            switch (operator){
+                case '+': answer = parseInt(firstNumber) + parseInt(secondNumber); break;
+                case '-': answer = parseInt(firstNumber) - parseInt(secondNumber); break;
+                case 'x': answer = parseInt(firstNumber) * parseInt(secondNumber); break;
+                case '/': answer = parseInt(firstNumber) / parseInt(secondNUmber); break;
+                case 'clear': scrn.value = ""; firstNumber = 0; secondNumber = 0; break;
+            }
+        }
+
+        function calc(){    //displaying the answer
+            calculate();
+            scrn.value = answer;
+        }
+
+    </script>
+</head>
+<body>
+
+
+
+<table>
+    <tr>
+        <td colspan="4"><input type="text" id="scrn" style="margin: 10px"></td>
+    </tr>
+    <tr>
+        <td><input type="button" id="btn1" value="1" onclick="digits(1)"></td>
+        <td><input type="button" id="btn2" value="2" onclick="digits(2)"></td>
+        <td><input type="button" id="btn3" value="3" onclick="digits(3)"></td>
+        <td><input type="button" id="add" value="+" onclick="operations('+')"></td>
+    </tr>
+    <tr>
+        <td><input type="button" id="btn4" value="4" onclick="digits(4)"></td>
+        <td><input type="button" id="btn5" value="5" onclick="digits(5)"></td>
+        <td><input type="button" id="btn6" value="6" onclick="digits(6)"></td>
+        <td><input type="button" id="sub" value="-" onclick="operations('-')"></td>
+    </tr>
+    <tr>
+        <td><input type="button" id="btn7" value="7" onclick="digits(7)"></td>
+        <td><input type="button" id="btn8" value="8" onclick="digits(8)"></td>
+        <td><input type="button" id="btn9" value="9" onclick="digits(9)"></td>
+        <td><input type="button" id="mul" value="X" onclick="operations('x')"></td>
+    </tr>
+    <tr>
+        <td><input type="button" id="btn0" value="0" onclick="digits(0)"></td>
+        <td><input type="button" id="clear" value="C" onclick="operations('clear')"></td>
+        <td><input type="button" id="cal" value="=" onclick="calc()"></td>
+        <td><input type="button" id="divide" value="/" onclick="operations('/')"></td>
+    </tr>
+</table>
+
+</body>
+</html>
